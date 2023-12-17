@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Common Subsequence</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <nav class="navbar navbar-dark navbar-expand-sm bg-dark fixed-top">
+      <div class="container">
+        <a href="index.html" class="navbar-brand navbar-no-highlight">
+          .Sorter
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link active">
+                Sorting
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="lcs.html" class="nav-link active">
+                LCS
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+      <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+      <!-- partial -->
+    </nav>
+
+    <div style="margin-top: 100px;" id="input-container">
+        <input type="text" id="string1" placeholder="Enter string 1">
+        <input style="margin-top: 10px;" type="text" id="string2" placeholder="Enter string 2">
+    </div>
+
+    <button class="main-btn" onclick="findLCS()">Find LCS</button>
+
+    <p id="originalNumbers"></p>
+    <p id="compilationTime"></p>
+    <p id="timeComplexity"></p>
+    <p id="lcsResult"></p>
+
+    <script src="main.js"></script>
+
+  </body>
+</html>
