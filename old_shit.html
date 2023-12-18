@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorithm Visualizer</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-dark navbar-expand-sm bg-dark fixed-top">
+      <div class="container">
+        <a href="index.html" class="navbar-brand navbar-no-highlight">
+          .Sorter
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link active"> Visualizer </a>
+            </li>
+            <li class="nav-item">
+              <a href="old_shit.html" class="nav-link active"> Sorting </a>
+            </li>
+            <li class="nav-item">
+              <a href="lcs.html" class="nav-link active"> LCS </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <script
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"
+      ></script>
+      <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"
+      ></script>
+      <!-- partial -->
+    </nav>
+
+    <button
+      style="margin-top: 100px"
+      class="main-btn"
+      onclick="generateNumbers()"
+    >
+      Generate Numbers
+    </button>
+    <button class="main-btn" onclick="insertionSort()">Insertion Sort</button>
+    <button class="main-btn" onclick="heapSort()">Heap Sort</button>
+    <button class="main-btn" onclick="quickSort()">Quick Sort</button>
+    <button class="main-btn" onclick="countingSort()">Counting Sort</button>
+
+    <div class="slider-container">
+      <div id="elements-text">
+        Elements: <span id="slider-span"></span><br />
+      </div>
+      <input
+        type="range"
+        value="0"
+        min="0"
+        max="1000"
+        step="1"
+        name="item-num"
+        id="slider"
+        oninput="sliderChange()"
+      />
+      <div id="elements-text">
+        Min Element: <span id="min-slider-span">0</span><br />
+      </div>
+      <input
+        type="range"
+        value="0"
+        min="0"
+        max="1000"
+        step="1"
+        name="min-element"
+        id="min-slider"
+        oninput="minSliderChange()"
+      />
+      <div id="elements-text">
+        Max Element: <span id="max-slider-span">0</span><br />
+      </div>
+      <input
+        type="range"
+        value="0"
+        min="0"
+        max="1000"
+        step="1"
+        name="max-element"
+        id="max-slider"
+        oninput="maxSliderChange()"
+      />
+    </div>
+
+    <p id="originalNumbers"></p>
+    <p id="sortedNumbers"></p>
+    <p id="compilationTime"></p>
+    <p id="timeComplexity"></p>
+    <p id="lcsResult"></p>
+
+    <script>
+      let originalNumbers = [];
+      let sortedNumbers = [];
+      let compilationTimeElement = document.getElementById("compilationTime");
+      let timeComplexityElement = document.getElementById("timeComplexity");
+      let lcsResultElement = document.getElementById("lcsResult");
+      let slider = document.getElementById("slider");
+      let sliderSpan = document.getElementById("slider-span");
+
+      function sliderChange() {
+        let sliderValue = document.getElementById("slider").value;
+        document.getElementById("slider-span").textContent = sliderValue;
+        generateNumbers();
+      }
+
+      function minSliderChange() {
+        let minSliderValue = document.getElementById("min-slider").value;
+        document.getElementById("min-slider-span").textContent = minSliderValue;
+        generateNumbers();
+      }
+
+      function maxSliderChange() {
+        let maxSliderValue = document.getElementById("max-slider").value;
+        document.getElementById("max-slider-span").textContent = maxSliderValue;
+        generateNumbers();
+      }
+
+      function generateNumbers() {
+        originalNumbers = [];
+        sortedNumbers = [];
+        compilationTimeElement.textContent = "";
+        timeComplexityElement.textContent = "";
+        lcsResultElement.textContent = "";
+
+        let numElements = parseInt(slider.value);
+        let minElement = parseInt(document.getElementById("min-slider").value);
+        let maxElement = parseInt(document.getElementById("max-slider").value);
+
+        for (let i = 0; i < numElements; i++) {
+          let number = Math.floor(Math.random() * (maxElement - minElement + 1)) + minElement;
+          originalNumbers.push(number);
+        }
+
+        document.getElementById(
+          "originalNumbers"
+        ).innerHTML = `Original Numbers:<br>${originalNumbers.join(", ")}`;
+        document.getElementById("sortedNumbers").textContent = "";
+      }
+
+      async function insertionSort() {
+        let start = performance.now();
+        sortedNumbers = await insertionSortHelper([...originalNumbers]);
+        let end = performance.now();
+        displayResults(start, end, "Insertion Sort", sortedNumbers);
+        timeComplexityElement.textContent = "Time Complexity: O(n^2)";
+      }
+
+      async function insertionSortHelper(arr) {
+        const n = arr.length;
+
+        for (let i = 1; i < n; i++) {
+          let key = arr[i];
+          let j = i - 1;
+
+          while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+          }
+
+          arr[j + 1] = key;
+        }
+
+        return arr;
+      }
+
+      async function heapSort() {
+        let start = performance.now();
+        await heapSortHelper([...originalNumbers]);
+        let end = performance.now();
+        displayResults(start, end, "Heap Sort", sortedNumbers);
+        timeComplexityElement.textContent = "Time Complexity: O(n log n)";
+      }
+
+      async function heapSortHelper(arr) {
+        let n = arr.length;
+
+        for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+          await heapify(arr, n, i);
+        }
+
+        for (let i = n - 1; i > 0; i--) {
+          [arr[0], arr[i]] = [arr[i], arr[0]];
+          await heapify(arr, i, 0);
+        }
+
+        sortedNumbers = arr;
+      }
+
+      async function heapify(arr, n, i) {
+        let largest = i;
+        let left = 2 * i + 1;
+        let right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) {
+          largest = left;
+        }
+
+        if (right < n && arr[right] > arr[largest]) {
+          largest = right;
+        }
+
+        if (largest !== i) {
+          [arr[i], arr[largest]] = [arr[largest], arr[i]];
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          await heapify(arr, n, largest);
+        }
+      }
+
+      async function quickSort() {
+        let start = performance.now();
+        await quickSortHelper(
+          [...originalNumbers],
+          0,
+          originalNumbers.length - 1
+        );
+        let end = performance.now();
+        displayResults(start, end, "Quick Sort", sortedNumbers);
+        timeComplexityElement.textContent =
+          "Time Complexity: O(n^2) (worst case) | O(n log n) (average case)";
+      }
+
+      async function quickSortHelper(arr, low, high) {
+        if (low < high) {
+          let pi = await partition(arr, low, high);
+          await quickSortHelper(arr, low, pi - 1);
+          await quickSortHelper(arr, pi + 1, high);
+        }
+      }
+
+      async function partition(arr, low, high) {
+        let pivot = arr[high];
+        let i = low - 1;
+
+        for (let j = low; j < high; j++) {
+          if (arr[j] < pivot) {
+            i++;
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+            await new Promise((resolve) => setTimeout(resolve, 50));
+          }
+        }
+
+        [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+        sortedNumbers = arr;
+        return i + 1;
+      }
+
+      async function countingSort() {
+        let start = performance.now();
+        sortedNumbers = await countingSortHelper([...originalNumbers]);
+        let end = performance.now();
+        displayResults(start, end, "Counting Sort", sortedNumbers);
+        timeComplexityElement.textContent = "Time Complexity: O(n + k)";
+      }
+
+      async function countingSortHelper(arr) {
+        let max = Math.max(...arr);
+        let min = Math.min(...arr);
+        let count = Array.from({ length: max - min + 1 }, () => 0);
+
+        for (let num of arr) {
+          count[num - min]++;
+        }
+
+        let sortedArr = [];
+        for (let i = 0; i < count.length; i++) {
+          while (count[i] > 0) {
+            sortedArr.push(i + min);
+            count[i]--;
+            await new Promise((resolve) => setTimeout(resolve, 50));
+          }
+        }
+
+        return sortedArr;
+      }
+
+      function displayResults(start, end, algorithm, result) {
+        compilationTimeElement.textContent = `Compilation time for ${algorithm}: ${
+          end - start
+        } milliseconds`;
+        document.getElementById(
+          "sortedNumbers"
+        ).textContent = `${algorithm} Result: ${result}`;
+      }
+
+      generateNumbers();
+    </script>
+  </body>
+</html>

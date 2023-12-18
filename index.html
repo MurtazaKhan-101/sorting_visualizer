@@ -33,6 +33,11 @@
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a href="index.html" class="nav-link active">
+                Visualizer
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="old_shit.html" class="nav-link active">
                 Sorting
               </a>
             </li>
@@ -61,7 +66,7 @@
     </nav>
 
       <button style="margin-top: 100px;" class="main-btn" onclick="generateNumbers()">Generate Numbers</button>
-      <button class="main-btn" onclick="mergeSort()">Merge Sort</button>
+      <button class="main-btn" onclick="insertionSort()">Insertion Sort</button>
       <button class="main-btn" onclick="heapSort()">Heap Sort</button>
       <button class="main-btn" onclick="quickSort()">Quick Sort</button>
       <button class="main-btn" onclick="countingSort()">Counting Sort</button>
@@ -71,7 +76,7 @@
         Elements: <span id="slider-span">10</span><br>
       </div>
       <input type="range" value="10" min="10" max="500" step="5" name="item-num"
-        id="slider" oninput="sliderChange()">
+        id="slider-visualizer" oninput="sliderChange()">
     </div>
 
     <div id="bars-container"></div>
