@@ -164,7 +164,9 @@
         // Validate minElement and maxElement
         if (minElement > maxElement) {
           alert("Min Element should not be greater than Max Element.");
-          return;
+          minElement = 0;
+          document.getElementById("min-slider").value = 0;
+          document.getElementById("min-slider-span").textContent = 0;
         }
 
         for (let i = 0; i < numElements; i++) {
