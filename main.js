@@ -37,22 +37,17 @@ function generateNumbers() {
   }
 
   barsContainer.style.height = `${maxHeight * 0.3}px`;
-
-  // document.getElementById(
-  //   "originalNumbers"
-  // ).innerHTML = `Original Numbers:<br>${originalNumbers.join(", ")}`;
-  // document.getElementById("sortedNumbers").textContent = "";
 }
 
-async function insertionSort() {
+function insertionSort() {
   let start = performance.now();
-  sortedNumbers = await insertionSortHelper([...originalNumbers]);
+  sortedNumbers = insertionSortHelper([...originalNumbers]);
   let end = performance.now();
   displayResults(start, end, "Insertion Sort", sortedNumbers);
   timeComplexityElement.textContent = "Time Complexity: O(n^2)";
 }
 
-async function insertionSortHelper(arr) {
+function insertionSortHelper(arr) {
   const n = arr.length;
 
   for (let i = 1; i < n; i++) {
@@ -62,42 +57,44 @@ async function insertionSortHelper(arr) {
     while (j >= 0 && arr[j] > key) {
       arr[j + 1] = arr[j];
       j--;
-      await updateBars(arr);
     }
 
     arr[j + 1] = key;
-    await updateBars(arr);
   }
+
+  // Update bars after each pass of the outer loop
+  updateBars(arr);
 
   return arr;
 }
 
-async function heapSort() {
+function heapSort() {
   let start = performance.now();
-  await heapSortHelper([...originalNumbers]);
+  heapSortHelper([...originalNumbers]);
   let end = performance.now();
   displayResults(start, end, "Heap Sort", sortedNumbers);
   timeComplexityElement.textContent = "Time Complexity: O(n log n)";
 }
 
-async function heapSortHelper(arr) {
+function heapSortHelper(arr) {
   let n = arr.length;
 
+  // Build max heap
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-    await heapify(arr, n, i);
+    heapify(arr, n, i);
   }
 
+  // Extract elements from the heap in descending order
   for (let i = n - 1; i > 0; i--) {
     [arr[0], arr[i]] = [arr[i], arr[0]];
-    await heapify(arr, i, 0);
-    await updateBars(arr);
+    heapify(arr, i, 0);
   }
 
   sortedNumbers = arr;
   updateBars();
 }
 
-async function heapify(arr, n, i) {
+function heapify(arr, n, i) {
   let largest = i;
   let left = 2 * i + 1;
   let right = 2 * i + 2;
@@ -112,30 +109,36 @@ async function heapify(arr, n, i) {
 
   if (largest !== i) {
     [arr[i], arr[largest]] = [arr[largest], arr[i]];
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    await heapify(arr, n, largest);
-    await updateBars(arr);
+    heapify(arr, n, largest);
   }
 }
 
-async function quickSort() {
+
+function quickSort() {
   let start = performance.now();
-  await quickSortHelper([...originalNumbers], 0, originalNumbers.length - 1);
+  quickSortHelper([...originalNumbers], 0, originalNumbers.length - 1);
   let end = performance.now();
   displayResults(start, end, "Quick Sort", sortedNumbers);
   timeComplexityElement.textContent =
     "Time Complexity: O(n^2) (worst case) | O(n log n) (average case)";
 }
 
-async function quickSortHelper(arr, low, high) {
-  if (low < high) {
-    let pi = await partition(arr, low, high);
-    await quickSortHelper(arr, low, pi - 1);
-    await quickSortHelper(arr, pi + 1, high);
+function quickSortHelper(arr, low, high) {
+  while (low < high) {
+    let pi = partition(arr, low, high);
+
+    // Tail call optimization
+    if (pi - low < high - pi) {
+      quickSortHelper(arr, low, pi - 1);
+      low = pi + 1;
+    } else {
+      quickSortHelper(arr, pi + 1, high);
+      high = pi - 1;
+    }
   }
 }
 
-async function partition(arr, low, high) {
+function partition(arr, low, high) {
   let pivot = arr[high];
   let i = low - 1;
 
@@ -143,8 +146,6 @@ async function partition(arr, low, high) {
     if (arr[j] < pivot) {
       i++;
       [arr[i], arr[j]] = [arr[j], arr[i]];
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      await updateBars(arr);
     }
   }
 
@@ -154,15 +155,16 @@ async function partition(arr, low, high) {
   return i + 1;
 }
 
-async function countingSort() {
+
+function countingSort() {
   let start = performance.now();
-  sortedNumbers = await countingSortHelper([...originalNumbers]);
+  sortedNumbers = countingSortHelper([...originalNumbers]);
   let end = performance.now();
   displayResults(start, end, "Counting Sort", sortedNumbers);
   timeComplexityElement.textContent = "Time Complexity: O(n + k)";
 }
 
-async function countingSortHelper(arr) {
+function countingSortHelper(arr) {
   let max = Math.max(...arr);
   let min = Math.min(...arr);
   let count = Array.from({ length: max - min + 1 }, () => 0);
@@ -176,15 +178,14 @@ async function countingSortHelper(arr) {
     while (count[i] > 0) {
       sortedArr.push(i + min);
       count[i]--;
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      await updateBars(sortedArr);
+      updateBars(sortedArr);
     }
   }
 
   return sortedArr;
 }
 
-async function findLCS() {
+function findLCS() {
   let start = performance.now();
   let string1 = document.getElementById("string1").value;
   let string2 = document.getElementById("string2").value;
@@ -230,7 +231,7 @@ function longestCommonSubsequence(str1, str2) {
   return lcsResult;
 }
 
-async function updateBars(arr) {
+function updateBars(arr) {
   barsContainer.innerHTML = "";
   let numbers = arr || sortedNumbers;
 
@@ -241,7 +242,7 @@ async function updateBars(arr) {
     barsContainer.appendChild(bar);
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 50));
+  setTimeout(() => {}, 50);
 }
 
 function displayResults(start, end, algorithm, result) {
