@@ -170,7 +170,9 @@
         }
 
         for (let i = 0; i < numElements; i++) {
-          let number = Math.floor(Math.random() * (maxElement - minElement + 1)) + minElement;
+          let number =
+            Math.floor(Math.random() * (maxElement - minElement + 1)) +
+            minElement;
           originalNumbers.push(number);
         }
 
@@ -250,7 +252,6 @@
         }
       }
 
-
       function quickSort() {
         let start = performance.now();
         quickSortHelper([...originalNumbers], 0, originalNumbers.length - 1);
@@ -291,7 +292,6 @@
         return i + 1;
       }
 
-
       function countingSort() {
         let start = performance.now();
         sortedNumbers = countingSortHelper([...originalNumbers]);
@@ -321,9 +321,8 @@
       }
 
       function displayResults(start, end, algorithm, result) {
-        compilationTimeElement.textContent = `Compilation time for ${algorithm}: ${
-          end - start
-        } milliseconds`;
+        const compilationTime = (end - start).toFixed(2);
+        compilationTimeElement.textContent = `Compilation time for ${algorithm}: ${compilationTime} milliseconds`;
         document.getElementById(
           "sortedNumbers"
         ).textContent = `${algorithm} Result: ${result}`;

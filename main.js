@@ -245,13 +245,9 @@ function updateBars(arr) {
   setTimeout(() => {}, 50);
 }
 
-function displayResults(start, end, algorithm, result) {
-  compilationTimeElement.textContent = `Compilation time for ${algorithm}: ${
-    end - start
-  } milliseconds`;
-  // document.getElementById(
-  //   "sortedNumbers"
-  // ).textContent = `${algorithm} Result: ${result}`;
+function displayResults(start, end, algorithm) {
+  const compilationTime = (end - start).toFixed(2);
+  compilationTimeElement.textContent = `Compilation time for ${algorithm}: ${compilationTime} milliseconds`;
 }
 
 generateNumbers();
