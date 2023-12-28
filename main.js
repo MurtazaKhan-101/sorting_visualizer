@@ -62,7 +62,6 @@ function insertionSortHelper(arr) {
     arr[j + 1] = key;
   }
 
-  // Update bars after each pass of the outer loop
   updateBars(arr);
 
   return arr;
@@ -79,12 +78,10 @@ function heapSort() {
 function heapSortHelper(arr) {
   let n = arr.length;
 
-  // Build max heap
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
     heapify(arr, n, i);
   }
 
-  // Extract elements from the heap in descending order
   for (let i = n - 1; i > 0; i--) {
     [arr[0], arr[i]] = [arr[i], arr[0]];
     heapify(arr, i, 0);
