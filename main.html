@@ -84,7 +84,7 @@
         type="range"
         value="0"
         min="0"
-        max="1000"
+        max="100000"
         step="1"
         name="item-num"
         id="slider"
@@ -97,7 +97,7 @@
         type="range"
         value="0"
         min="0"
-        max="1000"
+        max="100000" 
         step="1"
         name="min-element"
         id="min-slider"
@@ -218,7 +218,7 @@
 
       function heapSortHelper(arr) {
         let n = arr.length;
-        
+
         for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
           heapify(arr, n, i);
         }
